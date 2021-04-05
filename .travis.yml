@@ -1,0 +1,15 @@
+services:
+  - docker
+
+script:
+  - docker build -t $DOCKER_USERNAME/todo-vue3 .
+  - docker images $DOCKER_USERNAME/todo-vue3
+
+before_deploy:
+  - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
+deploy:
+  provider: script
+  script: docker push $DOCKER_USERNAME/todo-vue3
+  on:
+    branch: main
